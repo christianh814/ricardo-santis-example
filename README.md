@@ -28,6 +28,7 @@ Ricardo
 Provide via an env var
 
 ```
+export MYCLI_NAME=Bob
 $ go run main.go saymyname 
 Bob
 ```
