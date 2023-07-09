@@ -39,26 +39,34 @@ to quickly create a Cobra application.`,
 		// Grab the ask variable
 		ask, _ := cmd.Flags().GetBool("ask")
 
-		// Watch for changes in the config file and write them if prompt changed the value
 		if ask {
+			// Prompt the user for their name if they provided the --ask flag
 			prompt := promptui.Prompt{
 				Label: "Your name",
 			}
 
+			// Get the result from the prompt
 			result, err := prompt.Run()
 
+			// Report any errors
 			if err != nil {
 				log.Fatalf("Prompt failed %v\n", err)
 			}
+
+			// Watch for changes in the config
 			viper.WatchConfig()
+
+			// Set the name var in the config file based on the result from the prompt
 			viper.Set("name", result)
+
+			// Write the config file with the new value
 			viper.WriteConfig()
 		}
 
-		// Grab the name var
+		// Grab the name var from any of the 3 places (CLI, Env Var, Config File)
 		name := viper.GetString("name")
 
-		// If name is empty, exit with error
+		// If name is empty, exit with error. Else, print the name
 		if name == "" {
 			log.Fatal("Name is required")
 		} else {
@@ -72,6 +80,6 @@ func init() {
 	saymynameCmd.Flags().StringP("name", "n", "", "Your name")
 	saymynameCmd.Flags().BoolP("ask", "a", false, "Ask for your name")
 
-	// Look for "name" in other places. 1st from CLI, 2nd Env Var, 3rd config file
+	// Look for "name" in other places. In order or precedence: 1st from CLI, 2nd Env Var, 3rd config file
 	viper.BindPFlag("name", saymynameCmd.Flags().Lookup("name"))
 }

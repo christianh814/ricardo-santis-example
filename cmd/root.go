@@ -77,7 +77,7 @@ func initConfig() {
 
 	viper.AutomaticEnv() // read in environment variables that match
 
-	// Add prefix for your CLI. This will turn into "MYCLI_"
+	// Add prefix for env vars for your CLI. This will turn into "MYCLI_"
 	viper.SetEnvPrefix("MYCLI")
 
 	// If a config file is found, read it in. Only displaying an error if there was a problem reading the file.
