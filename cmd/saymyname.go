@@ -21,8 +21,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-
-	"github.com/manifoldco/promptui"
 )
 
 // saymynameCmd represents the saymyname command
@@ -41,16 +39,18 @@ to quickly create a Cobra application.`,
 
 		if ask {
 			// Prompt the user for their name if they provided the --ask flag
-			prompt := promptui.Prompt{
-				Label: "Your name",
+			var result string
+			fmt.Printf("Your name: ")
+
+			// Scan and check for errors
+			_, err := fmt.Scanln(&result)
+			if err != nil {
+				log.Fatal(err)
 			}
 
-			// Get the result from the prompt
-			result, err := prompt.Run()
-
-			// Report any errors
-			if err != nil {
-				log.Fatalf("Prompt failed %v\n", err)
+			// Report error if user entered nothing
+			if result == "" {
+				log.Fatal("Name cannot be blank")
 			}
 
 			// Watch for changes in the config
